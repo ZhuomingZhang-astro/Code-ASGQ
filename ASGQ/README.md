@@ -17,7 +17,7 @@ Core statistical pipeline for primary data processing, statistical analysis, and
 | **3** | `r` | Radial distance ($r$) (kpc) |
 | **4** | `ra_deg` | Right Ascension (RA) relative to the central galaxy reference frame (deg) |
 | **5** | `dec_deg` | Declination (DEC) relative to the central galaxy reference frame (deg) |
-| **6** | `sgal_sfr` | Star Formation Rate (SFR) ($M_\odot \mathrm{yr}^{-1}$) |
+| **6** | `sgal_sfr` | Star Formation Rate (SFR) ($M_\odot  · \mathrm{yr}^{-1}$) |
 | **7** | `sgal_starmass` | Stellar mass of the galaxy ($M_\odot$) |
 | **8** | `gal_index_select` | Galaxy Catalogue ID |
 | **9** | `central_CID_array` | Central galaxy Catalogue ID |
