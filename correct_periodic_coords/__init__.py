@@ -1,5 +1,5 @@
 """
-correct_periodic_coords: 基于周期性边界条件修正跨边界的粒子坐标
+correct_periodic_coords: Correct particle coordinates across boundaries based on periodic boundary conditions.
 """
 
 from .core import (
@@ -10,4 +10,4 @@ __all__ = [
     "Correct_Periodic_Coords"
 ]
 
-__version__ = "0.1.1"  # 包版本号
+__version__ = "0.1.1"  # Package version
