@@ -25,13 +25,13 @@ Core statistical pipeline for primary data processing, statistical analysis, and
 | **11** | `progen_cgalCID` | Progenitor central galaxy Catalogue ID |
 | **12** | `descen_CID_select` | Descendant galaxy Catalogue ID |
 | **13** | `descen_cgalCID_select` | Descendant central galaxy Catalogue ID |
-| **14 – 16** | `rotated_vel[:, 0:3]` | 3D velocity components $(v_x, v_y, v_z)$ relative to the central galaxy reference frame ($\mathrm{km s^{-1}}$) |
+| **14 – 16** | `rotated_vel[:, 0:3]` | 3D velocity components $(v_x, v_y, v_z)$ relative to the central galaxy reference frame ($\mathrm{km · s^{-1}}$) |
 | **17** | `Radius` | Host halo $R_\mathrm{200}$ radius (kpc) |
 | **18** | `sgal_radiihalf` | Galaxy half-mass radius (kpc) |
 | **19 – 21** | `sgal_abspos[:, 0:3]` | Coordinates of galaxy in simulation box (kpc) |
 | **22 – 24** | `cgal_abspos[:, 0:3]` | Coordinates of central galaxy in simulation box (kpc) |
-| **25 – 27** | `sgal_absvel[:, 0:3]` | Velocity of galaxy in simulation box ($\mathrm{km s^{-1}}$) |
-| **28 – 30** | `cgal_absvel[:, 0:3]` | Velocity of central galaxy in simulation box ($\mathrm{km s^{-1}}$) |
+| **25 – 27** | `sgal_absvel[:, 0:3]` | Velocity of galaxy in simulation box ($\mathrm{km · s^{-1}}$) |
+| **28 – 30** | `cgal_absvel[:, 0:3]` | Velocity of central galaxy in simulation box ($\mathrm{km · s^{-1}}$) |
 | **31** | `sgal_mass` | Total mass of the galaxy ($M_\odot$) |
 | **32** | `Mass` | Host halo mass within $R_\mathrm{200c}$ ($M_\odot$) |
 | **33** | `merge` | Merger status flag |
