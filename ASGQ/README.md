@@ -11,37 +11,37 @@ Core statistical pipeline for primary data processing, statistical analysis, and
    * **Output Data Structure:**
      * **1. Galaxy and Environment Data (`sgaldata`):** Records information for every central galaxy and all surrounding galaxies within $10 R_\mathrm{200c}$ of its position across independent runs.
        
-       | Column / Index | Variable Name in Script | Physical Meaning & Description |
-       | :--- | :--- | :--- |
-       | **0 – 2** | `rotated_pos[:, 0:3]` | Rotated 3D position coordinates $(x, y, z)$ |
-       | **3** | `r` | Radial distance ($r$) |
-       | **4** | `ra_deg` | Right Ascension (RA in degrees) |
-       | **5** | `dec_deg` | Declination (DEC in degrees) |
-       | **6** | `sgal_sfr` | Star Formation Rate (SFR) |
-       | **7** | `sgal_starmass` | Stellar mass of the galaxy |
-       | **8** | `gal_index_select` | Galaxy Catalogue ID (`CatalogueID`) |
-       | **9** | `central_CID_array` | Central galaxy Catalogue ID (`central_galaxy_CatalogueID`) |
-       | **10** | `progen_CID` | Progenitor Catalogue ID (`progen_CatalogueID`) |
-       | **11** | `progen_cgalCID` | Progenitor central galaxy Catalogue ID (`progen_central_galaxy_CatalogueID`) |
-       | **12** | `descen_CID_select` | Descendant Catalogue ID (`descen_CatalogueID`) |
-       | **13** | `descen_cgalCID_select` | Descendant central galaxy Catalogue ID (`descen_central_galaxy_CatalogueID`) |
-       | **14 – 16** | `rotated_vel[:, 0:3]` | Rotated 3D velocity components $(vx, vy, vz)$ |
-       | **17** | `Radius` | Host halo $R_{200}$ radius ($R_{200}$) |
-       | **18** | `sgal_radiihalf` | Galaxy half-mass radius ($R_{gal\_half}$) |
-       | **19 – 21** | `sgal_abspos[:, 0:3]` | Absolute position of the galaxy $(x, y, z)$ |
-       | **22 – 24** | `cgal_abspos[:, 0:3]` | Absolute position of the central galaxy $(x, y, z)$ |
-       | **25 – 27** | `sgal_absvel[:, 0:3]` | Absolute velocity of the galaxy $(vx, vy, vz)$ |
-       | **28 – 30** | `cgal_absvel[:, 0:3]` | Absolute velocity of the central galaxy $(vx, vy, vz)$ |
-       | **31** | `sgal_mass` | Total mass of the galaxy (`gal_total_mass`) |
-       | **32** | `Mass` | Host halo mass within $R_{200c}$ (`Halo_M200c`) |
-       | **33** | `merge` | Merger status flag (`whether_merge`) |
-       | **34** | `sgal_dmmass` | Dark matter mass of the galaxy (`gal_dmmass`) |
-       | **35** | `sgal_gasmass` | Gas mass of the galaxy (`gal_gasmass`) |
+| Column / Index | Variable Name in Script | Physical Meaning & Description |
+| :--- | :--- | :--- |
+| **0 – 2** | `rotated_pos[:, 0:3]` | Coordinates $(x, y, z)$ relative to the central galaxy's reference frame, aligned with its major, intermediate, and minor axes [kpc] |
+| **3** | `r` | Radial distance ($r$) [kpc] |
+| **4** | `ra_deg` | Right Ascension (RA) relative to the central galaxy reference frame [deg] |
+| **5** | `dec_deg` | Declination (DEC) relative to the central galaxy reference frame [deg] |
+| **6** | `sgal_sfr` | Star Formation Rate (SFR) [M_sun / yr] |
+| **7** | `sgal_starmass` | Stellar mass of the galaxy [M_sun] |
+| **8** | `gal_index_select` | Galaxy Catalogue ID |
+| **9** | `central_CID_array` | Central galaxy Catalogue ID |
+| **10** | `progen_CID` | Progenitor galaxy Catalogue ID |
+| **11** | `progen_cgalCID` | Progenitor central galaxy Catalogue ID |
+| **12** | `descen_CID_select` | Descendant galaxy Catalogue ID |
+| **13** | `descen_cgalCID_select` | Descendant central galaxy Catalogue ID |
+| **14 – 16** | `rotated_vel[:, 0:3]` | 3D velocity components $(v_x, v_y, v_z)$ relative to the central galaxy reference frame [km/s] |
+| **17** | `Radius` | Host halo $R_\mathrm{200}$ radius [kpc] |
+| **18** | `sgal_radiihalf` | Galaxy half-mass radius [kpc] |
+| **19 – 21** | `sgal_abspos[:, 0:3]` | Coordinates of galaxy in simulation box [kpc] |
+| **22 – 24** | `cgal_abspos[:, 0:3]` | Coordinates of central galaxy in simulation box [kpc] |
+| **25 – 27** | `sgal_absvel[:, 0:3]` | Velocity of galaxy in simulation box [km/s] |
+| **28 – 30** | `cgal_absvel[:, 0:3]` | Velocity of central galaxy in simulation box [km/s] |
+| **31** | `sgal_mass` | Total mass of the galaxy [M_sun] |
+| **32** | `Mass` | Host halo mass within $R_\mathrm{200c}$ [M_sun] |
+| **33** | `merge` | Merger status flag |
+| **34** | `sgal_dmmass` | Dark matter mass of the galaxy [M_sun] |
+| **35** | `sgal_gasmass` | Gas mass of the galaxy [M_sun] |
 
      * **2. Halo Triaxiality and Variance Data:** Compiles halo-level attributes across the $N_{re}$ runs:
-       * **Central Galaxy / Host Halo ID:** Unique identifier mapping each host halo and its central galaxy.
-       * **Ellipsoidal Triaxial Orientation:** Calculated directional vectors / axes of the host halo's triaxial ellipsoid.
-       * **Variance:** Statistical variance associated with the triaxiality computations across the repeated runs.
+       * **Central Galaxy ID:** Unique identifier mapping each central galaxy and its host halo.
+       * **Ellipsoidal Triaxial Orientation:** Calculated directional vectors of the cental galaxy's / host halo's triaxial ellipsoid.
+       * **Variance:** The variance (eigenvalues) along the principal axes derived from the PCA algorithm, quantifying the shape and dispersion of the distribution.
 
 2. [`SFGVQ.py`](SFGVQ.py)
    * **Description:** Core script for evaluating spatial segregation and anisotropic satellite quenching statistics.
