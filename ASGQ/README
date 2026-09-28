@@ -1,0 +1,26 @@
+# ASGQ Core Pipeline
+
+Core statistical pipeline for primary data processing, statistical analysis, and figure generation for the project.
+
+---
+
+## 📂 Contents & Script Descriptions
+
+* [`stack_clusters_partaxis.py`](stack_clusters_partaxis.py) — Performs cluster stacking along major/minor axes and computes satellite anisotropy and kinematics.
+* [`SFGVQ.py`](SFGVQ.py) — Computes halo mass functions and associated statistical distributions.
+* [`mass_function.ipynb`](mass_function.ipynb) — Computes halo mass functions and associated statistical distributions.
+* [`ASGQ_Nratio.ipynb`](ASGQ_Nratio.ipynb) — Computes halo mass functions and associated statistical distributions.
+* [`ASGQ_Mstar.ipynb`](ASGQ_Mstar.ipynb) — Computes halo mass functions and associated statistical distributions.
+* [`ASGQ_Radius.ipynb`](ASGQ_Radius.ipynb) — Computes halo mass functions and associated statistical distributions.
+* [`classifier.ipynb`](classifier.ipynb) — Computes halo mass functions and associated statistical distributions.
+* [`geometry.ipynb`](geometry.ipynb) — Computes halo mass functions and associated statistical distributions.
+
+---
+
+## ⚙️ Usage Notes
+
+Make sure you have activated the project's Conda environment (`workenv`) from the root directory before running these scripts or notebooks:
+
+```bash
+conda activate workenv
+jupyter lab  # or python <script_name>.py
