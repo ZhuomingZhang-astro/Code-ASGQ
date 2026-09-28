@@ -15,9 +15,9 @@ def process_halo_data(simulation_name, h, catalog_path, snapshot_path, L, snapnu
     
     yt.set_log_level("warning")
     yt.set_log_level("error")
-    # 遍历每个文件并读取粒子数据
+    # Iterate through each file and read particle data
     ds = yt.load(snapshot_path)
-    # 获取整个数据集的所有粒子数据
+    # Get all particle data for the entire dataset
     ad = ds.all_data()
     # particle position unit: SIMBA[kpc/h], TNG100[kpc/h], EAGLE[Mpc/h], SIMBAnofb[kpc/h]
     star_pos = ad["PartType4", "Coordinates"]
@@ -25,8 +25,8 @@ def process_halo_data(simulation_name, h, catalog_path, snapshot_path, L, snapnu
         dm_pos = ad["PartType1", "Coordinates"]
     
     file_path_catalog = catalog_path
-    with h5py.File(file_path_catalog, 'r') as f:       
-        # 输入数据
+    with h5py.File(file_path_catalog, 'r') as f:        
+        # Input data
         GroupID = f['galaxy_data/GroupID'][:]
         parent_halo_index = f['galaxy_data/parent_halo_index'][:]
         central = f['galaxy_data/central'][:]
@@ -51,19 +51,19 @@ def process_halo_data(simulation_name, h, catalog_path, snapshot_path, L, snapnu
         dmlist_end = f['halo_data/dmlist_end'][()]
         dmlist = f['halo_data/lists/dmlist'][()]
         
-    # 生成数组resident，resident[i]提供halo_index=i的halo中星系在catalogue的ID
+    # Generate the resident array, where resident[i] provides the catalog IDs of galaxies in the halo with halo_index=i
     resident = np.empty(np.max(parent_halo_index)+1, dtype=object)
 
-    # 将每个元素初始化为空列表
+    # Initialize each element as an empty list
     for i in range(len(resident)):
         resident[i] = []
 
-    # 写入每个halo中的星系
+    # Write galaxies into each halo
     for i in range(len(parent_halo_index)):
         if star_mass[i] >= 10**(8):
             resident[parent_halo_index[i]].append(i)
 
-    cluster_halo_CID = []  # 用来存放被认为是cluster的halo在catalog的索引
+    cluster_halo_CID = []  # Used to store the catalog indices of halos considered to be clusters
 
     for i in range(len(resident)):
         if len(resident[i]) >= 1:
@@ -98,22 +98,22 @@ def process_halo_data(simulation_name, h, catalog_path, snapshot_path, L, snapnu
         return galaxy_index, accept
 
 
-    sgaldata = [[] for _ in range(N_re+1)]
+sgaldata = [[] for _ in range(N_re+1)]
     CID_vec_var = []
 
     for index in range(len(cluster_halo_CID)):
-        # 第index号星系团/群
-        # 读取中心星系的恒星坐标    
-        gal_index = np.array(resident[cluster_halo_CID[index]])  # 当前halo中的所有成员星系CID列表
-        central_rCID, accept = central_rCID_finder(cluster_halo_CID[index])  # 当前halo中的中心星系rCID
+        # Galaxy cluster/group index
+        # Read the stellar coordinates of the central galaxy    
+        gal_index = np.array(resident[cluster_halo_CID[index]])  # List of CIDs of all member galaxies in the current halo
+        central_rCID, accept = central_rCID_finder(cluster_halo_CID[index])  # rCID of the central galaxy in the current halo
         if not accept:
             continue
-        central_CID, accept = central_CID_finder(cluster_halo_CID[index])  # 当前halo中的中心星系CID
+        central_CID, accept = central_CID_finder(cluster_halo_CID[index])  # CID of the central galaxy in the current halo
         cgal_pos = pos[central_CID]
-        R200c = halo_radius[cluster_halo_CID[index]]  # 距离阈值 [kpc]
+        R200c = halo_radius[cluster_halo_CID[index]]  # Distance threshold [kpc]
         M200c = halo_mass[cluster_halo_CID[index]]
         
-        # 从snapshot中读取中心星系的所有恒星坐标
+        # Read all stellar coordinates of the central galaxy from the snapshot
         star_cgal_SID = slist[slist_start[central_CID]:slist_end[central_CID]]
         if (R200c != 0) and (M200c >= halo_mass_limit) and (len(star_cgal_SID) > star_num_limit):
             mask = (GroupID != central_CID) # & (star_mass >= 1e8)
@@ -135,15 +135,16 @@ def process_halo_data(simulation_name, h, catalog_path, snapshot_path, L, snapnu
                     pos_other = np.concatenate([pos_other, pos_other + offset])
                     radii_half_other = np.concatenate([radii_half_other, radii_half_other])
 
-            # 计算 近邻星系 中每个点到中心点的欧氏距离
+            # Calculate the Euclidean distance from each point in the neighboring galaxies to the center point
             distances = Compute_Distances_Numba(pos_other, cgal_pos)
-            # 筛选出距离小于阈值的点
+            # Filter out points with distances less than the threshold
             nearby_gal_CID = CID_other[distances < radius_cluster]
             nearby_gal_pos = pos_other[distances < radius_cluster]
             nearby_gal_rhalf = radii_half_other[distances < radius_cluster]
             
             
             if part_axis == 'star':
+                # star particles' positions
                 star_cgal_pos_unscale = star_pos[star_cgal_SID]
                 star_cgal_pos_unscale = np.column_stack((star_cgal_pos_unscale[:,0].astype(np.float64), star_cgal_pos_unscale[:,1].astype(np.float64), star_cgal_pos_unscale[:,2].astype(np.float64)))
                 
@@ -169,7 +170,7 @@ def process_halo_data(simulation_name, h, catalog_path, snapshot_path, L, snapnu
                     
 
             if part_axis == 'dm':
-                # halo的暗物质粒子坐标
+                # dark matter particles' positions
                 dm_cgal_SID = dmlist[dmlist_start[cluster_halo_CID[index]]:dmlist_end[cluster_halo_CID[index]]]
                 dm_cgal_pos_unscale = dm_pos[dm_cgal_SID] # Mpc / h
                 dm_cgal_pos_unscale = np.column_stack((dm_cgal_pos_unscale[:,0].astype(np.float64), dm_cgal_pos_unscale[:,1].astype(np.float64), dm_cgal_pos_unscale[:,2].astype(np.float64)))
@@ -186,7 +187,6 @@ def process_halo_data(simulation_name, h, catalog_path, snapshot_path, L, snapnu
                 radius_dm = R200c
                 dm_cgal_pos = Correct_Periodic_Coords(pos=dm_cgal_pos, central_pos=cgal_pos, radius=radius_dm, L_box=L)
                 distances = np.sqrt(np.sum((dm_cgal_pos - cgal_pos) ** 2, axis=1))
-                # 筛选出距离小于阈值的点
                 dm_cgal_pos = dm_cgal_pos[distances < radius_dm]
 
                 if len(dm_cgal_pos) > 100000:
@@ -204,7 +204,7 @@ def process_halo_data(simulation_name, h, catalog_path, snapshot_path, L, snapnu
             if axes_collect[0] is None:
                 continue
                     
-            # 对重复计算求平均（axis=0表示沿"次数"维度计算）
+            # Average over repeated calculations (axis=0 indicates along the "repetition" dimension)
             ave_vectors = np.array(axes_collect).mean(axis=0)
             ave_variances = np.array(variances_collect).mean(axis=0)
             
@@ -212,19 +212,19 @@ def process_halo_data(simulation_name, h, catalog_path, snapshot_path, L, snapnu
             
             for N_i in range(len(sgaldata)):
                 if (N_i == 0):
-                    # 提取三个方向的平均值
+                    # Extract the average values of the three directions
                     vec1, vec2, vec3 = ave_vectors
                 if (N_i != 0):
-                    # 提取三个方向的平均值
+                    # Extract the average values of the three directions
                     vec1, vec2, vec3 = axes_collect[N_i-1]
                     
-                # 按照椭球三个轴(从长到短)作为新的x,y,z轴，旋转坐标系
-                # 构建旋转矩阵
-                # 确保 vec1, vec2, vec3 是单位向量
+                # Rotate the coordinate system using the three axes of the ellipsoid (from longest to shortest) as the new x, y, z axes
+                # Construct the rotation matrix
+                # Ensure that vec1, vec2, and vec3 are unit vectors
                 vec1 = vec1 / np.linalg.norm(vec1)
                 vec2 = vec2 / np.linalg.norm(vec2)
                 vec3 = vec3 / np.linalg.norm(vec3)
-                # 构建旋转矩阵
+                # Construct the rotation matrix
                 rotation_matrix = np.vstack([vec1, vec2, vec3]).T
 
                 if (include_cgal == True):
@@ -238,11 +238,11 @@ def process_halo_data(simulation_name, h, catalog_path, snapshot_path, L, snapnu
                 cgal_abspos = np.column_stack((np.repeat(cgal_pos[0], len(gal_index_select)), 
                                np.repeat(cgal_pos[1], len(gal_index_select)), 
                                np.repeat(cgal_pos[2], len(gal_index_select))))
-                # 相对坐标
+                # Relative coordinates
                 relative_pos = sgal_abspos - cgal_pos
-                # 径向距离 r
+                # Radial distance r
                 r = np.linalg.norm(relative_pos, axis=1)
-                mask = (r > 2 * radii_half[central_CID]) | (gal_index_select == central_CID) # 只保留>2*r_half的卫星星系
+                mask = (r > 2 * radii_half[central_CID]) | (gal_index_select == central_CID) # Keep only satellite galaxies with r > 2 * r_half
                 gal_index_select = gal_index_select[mask]
                 r = r[mask]
                 sgal_abspos = sgal_abspos[mask]
@@ -254,35 +254,35 @@ def process_halo_data(simulation_name, h, catalog_path, snapshot_path, L, snapnu
                                np.repeat(vel[central_CID][1], len(gal_index_select)), 
                                np.repeat(vel[central_CID][2], len(gal_index_select))))
                 
-                # 应用旋转矩阵
+                # Apply the rotation matrix
                 rotated_pos = np.dot(relative_pos, rotation_matrix)
 
                 relative_vel = vel[gal_index_select] - vel[central_CID]
                 rotated_vel = np.dot(relative_vel, rotation_matrix)
 
-                # 计算球坐标
+                # Calculate spherical coordinates
                 ra_deg = np.zeros_like(r)
                 dec_deg = np.zeros_like(r)
                 for i in range(len(r)): 
                     if (r[i] != 0):
-                        # 赤经 RA（弧度）
+                        # Right ascension RA (radians)
                         ra_i = np.arctan2(rotated_pos[i, 1], rotated_pos[i, 0])
-                        # 赤纬 DEC（弧度）
+                        # Declination DEC (radians)
                         dec_i = np.arcsin(rotated_pos[i, 2] / r[i])
-                        # 将 RA 和 DEC 从弧度转换为度
+                        # Convert RA and DEC from radians to degrees
                         ra_deg[i] = np.mod(np.degrees(ra_i), 360)
                         dec_deg[i] = np.degrees(dec_i)
 
                     if (r[i] == 0):
-                        # 赤经 RA（弧度）
+                        # Right ascension RA (radians)
                         ra_deg[i] = np.nan
-                        # 赤纬 DEC（弧度）
+                        # Declination DEC (radians)
                         dec_deg[i] = np.nan
 
-                # 录入恒星生成率
+                # Record the star formation rate
                 sgal_sfr = sfr[gal_index_select]
 
-                # 录入每个卫星星系的恒星质量
+                # Record the stellar mass of each satellite galaxy
                 sgal_dmmass = dm_mass[gal_index_select]
                 sgal_gasmass = gas_mass[gal_index_select]
                 sgal_starmass = star_mass[gal_index_select]
@@ -290,14 +290,14 @@ def process_halo_data(simulation_name, h, catalog_path, snapshot_path, L, snapnu
 
                 sgal_mass = sgal_dmmass + sgal_gasmass + sgal_starmass
 
-                # 录入当前cluster中心星系的Group ID
+                # Record the Group ID of the central galaxy in the current cluster
                 central_CID_array = np.full(len(gal_index_select), central_CID)
 
-                # 录入当前cluster的radius
+                # Record the radius of the current cluster
                 Radius = np.full(len(gal_index_select), R200c)
                 Mass = np.full(len(gal_index_select), M200c)
 
-                # 其他
+                # Others
                 progen_CID = np.full(len(gal_index_select), np.nan)
                 progen_cgalCID = np.full(len(gal_index_select), np.nan)
                 descen_CID_select = np.full(len(gal_index_select), np.nan)
