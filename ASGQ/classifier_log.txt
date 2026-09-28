@@ -1,0 +1,20 @@
+=== Processing Simulation: SIMBA ===
+Running task for part_axis: star
+FiniFinish: SIMBAnofb-star
+Running task for part_axis: dm
+Finish: SIMBAnofb-dm
+ng Simulation: TNG100 ===
+Running task for part_axis: star
+Finish: TNG100-star
+Running task for part_axis: dm
+Finish: TNG100-dm
+=== Processing Simulation: EAGLE ===
+Running task for part_axis: star
+Finish: EAGLE-star
+Running task for part_axis: dm
+Finish: EAGLE-dm
+=== Processing Simulation: SIMBAnofb ===
+Running task for part_axis: star
+Finish: SIMBAnofb-star
+Running task for part_axis: dm
+Finish: SIMBAnofb-dm

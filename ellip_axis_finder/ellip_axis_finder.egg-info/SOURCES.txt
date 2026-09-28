@@ -1,0 +1,6 @@
+setup.py
+ellip_axis_finder.egg-info/PKG-INFO
+ellip_axis_finder.egg-info/SOURCES.txt
+ellip_axis_finder.egg-info/dependency_links.txt
+ellip_axis_finder.egg-info/requires.txt
+ellip_axis_finder.egg-info/top_level.txt

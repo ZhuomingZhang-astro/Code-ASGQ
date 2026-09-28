@@ -1,0 +1,2 @@
+[console_scripts]
+caesar = caesar.command_line:run

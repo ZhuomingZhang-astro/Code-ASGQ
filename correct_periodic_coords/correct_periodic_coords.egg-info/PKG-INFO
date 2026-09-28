@@ -1,0 +1,14 @@
+Metadata-Version: 2.4
+Name: correct_periodic_coords
+Version: 0.1.1
+Summary: A tool for finding ellipsoid axes via sphere sampling and PCA
+Home-page: 
+Author: Zhuoming Zhang
+Requires-Dist: numpy>=1.21.0
+Requires-Dist: scipy>=1.7.0
+Requires-Dist: scikit-learn>=1.0.0
+Requires-Dist: numba>=0.55.0
+Requires-Dist: joblib>=1.1.0
+Dynamic: author
+Dynamic: requires-dist
+Dynamic: summary
