@@ -6,7 +6,7 @@ Core statistical pipeline for primary data processing, statistical analysis, and
 
 ## 📂 Code Scripts & Notebooks
 
-1. [`stack_clusters_partaxis.py`](stack_clusters_partaxis.py)
+1. [`stack_clusters_partaxis.py`](stack_clusters_partaxis.py) Note: Utility script (imported and used as a module).
    * **Description:** Computes ellipsoidal triaxiality based on "central galaxy stellar particle data" / "host halo dark matter particles within $R_\mathrm{200c}$" across $N_\mathrm{re}$ independent repeated runs.
    * **Output Data Structure:**
      * **1. Galaxy and Environment Data (`sgaldata`):** Records information for every central galaxy and all surrounding galaxies within $10 R_\mathrm{200c}$ of its position across independent runs.
@@ -43,7 +43,7 @@ Core statistical pipeline for primary data processing, statistical analysis, and
      * **Ellipsoidal Triaxial Orientation:** Calculated directional vectors of the cental galaxy's / host halo's triaxial ellipsoid.
      * **Variance:** The variance (eigenvalues) along the principal axes derived from the PCA algorithm, quantifying the shape and dispersion of the distribution.
 
-2. [`SFGVQ.py`](SFGVQ.py)
+2. [`SFGVQ.py`](SFGVQ.py) Note: Utility script (imported and used as a module).
    * **Description:** Core script for evaluating spatial segregation and anisotropic satellite quenching statistics.
 
 3. [`classifier.ipynb`](classifier.ipynb)
