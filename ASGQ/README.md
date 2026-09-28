@@ -38,10 +38,10 @@ Core statistical pipeline for primary data processing, statistical analysis, and
 | **34** | `sgal_dmmass` | Dark matter mass of the galaxy ($M_\odot$) |
 | **35** | `sgal_gasmass` | Gas mass of the galaxy ($M_\odot$) |
 
-     * **2. Halo Triaxiality and Variance Data:** Compiles halo-level attributes across the $N_{re}$ runs:
-       * **Central Galaxy ID:** Unique identifier mapping each central galaxy and its host halo.
-       * **Ellipsoidal Triaxial Orientation:** Calculated directional vectors of the cental galaxy's / host halo's triaxial ellipsoid.
-       * **Variance:** The variance (eigenvalues) along the principal axes derived from the PCA algorithm, quantifying the shape and dispersion of the distribution.
+   * **2. Halo Triaxiality and Variance Data:** Compiles halo-level attributes across the $N_{re}$ runs:
+     * **Central Galaxy ID:** Unique identifier mapping each central galaxy and its host halo.
+     * **Ellipsoidal Triaxial Orientation:** Calculated directional vectors of the cental galaxy's / host halo's triaxial ellipsoid.
+     * **Variance:** The variance (eigenvalues) along the principal axes derived from the PCA algorithm, quantifying the shape and dispersion of the distribution.
 
 2. [`SFGVQ.py`](SFGVQ.py)
    * **Description:** Core script for evaluating spatial segregation and anisotropic satellite quenching statistics.
