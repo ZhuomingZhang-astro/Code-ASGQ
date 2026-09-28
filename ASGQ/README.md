@@ -7,9 +7,9 @@ Core statistical pipeline for primary data processing, statistical analysis, and
 ## 📂 Code Scripts & Notebooks
 
 1. [`stack_clusters_partaxis.py`](stack_clusters_partaxis.py)
-   * **Description:** Computes ellipsoidal triaxiality based on central galaxy stellar particle data and host halo dark matter particles within $R_{200c}$ across $N_{re}$ independent repeated runs.
+   * **Description:** Computes ellipsoidal triaxiality based on "central galaxy stellar particle data" / "host halo dark matter particles within $R_\mathrm{200c}$" across $N_\mathrm{re}$ independent repeated runs.
    * **Output Data Structure:**
-     * **1. Galaxy and Environment Data (`sgaldata[N_i]`):** Records information for every central galaxy and all surrounding galaxies within $10 R_{200c}$ of its position across independent runs.
+     * **1. Galaxy and Environment Data (`sgaldata`):** Records information for every central galaxy and all surrounding galaxies within $10 R_\mathrm{200c}$ of its position across independent runs.
        
        | Column / Index | Variable Name in Script | Physical Meaning & Description |
        | :--- | :--- | :--- |
