@@ -5,19 +5,19 @@ from sklearn.decomposition import PCA
 from numba import njit
 from joblib import Parallel, delayed
 
-#----------------Method 1-----------------
+#----------------Method 1: PCA-----------------
 
 @njit
 def Compute_Distances_Numba(particle_pos, samp_center):
     """
-    用Numba加速计算粒子位置与采样中心的欧氏距离
+    Use Numba to accelerate the calculation of Euclidean distance between particle positions and the sampling center
     
-    参数:
-        particle_pos: 形状为 (N, 3) 的NumPy数组，粒子的三维坐标
-        samp_center: 形状为 (3,) 的NumPy数组，采样中心的三维坐标
+    Parameters:
+        particle_pos: NumPy array of shape (N, 3), 3D coordinates of the particles
+        samp_center: NumPy array of shape (3,), 3D coordinates of the sampling center
     
-    返回:
-        distances: 形状为 (N,) 的NumPy数组，每个粒子到采样中心的距离
+    Returns:
+        distances: NumPy array of shape (N,), distance from each particle to the sampling center
     """
     n = particle_pos.shape[0]
     distances = np.empty(n, dtype=np.float64)
@@ -32,45 +32,45 @@ def Compute_Distances_Numba(particle_pos, samp_center):
 def Single_Sphere_Sampling(N_samp, sphere_center, radius, samp_radius, 
                           particle_pos, nearby_gal_pos, nearby_gal_rhalf, rho_N_ave, rho_N_cri_ratio):
     """
-    单次球体采样并计算椭球轴（供并行调用）
+    Single-sphere sampling and calculation of ellipsoid axes (for parallel invocation)
     
-    参数:
-        N_samp: 目标采样点数
-        sphere_center: 元组或形状为 (3,) 的数组，球体中心坐标 (x, y, z)
-        radius: 球体半径
-        samp_radius: 采样小球半径（= radius * samp_radius_ratio）
-        particle_pos: 形状为 (N, 3) 的数组，粒子坐标
-        rho_N_ave: 平均粒子数密度
-        rho_N_cri_ratio: 密度阈值比例（实际阈值 = rho_N_cri_ratio * rho_N_ave）
+    Parameters:
+        N_samp: Target number of sampling points
+        sphere_center: Tuple or array of shape (3,), sphere center coordinates (x, y, z)
+        radius: Sphere radius
+        samp_radius: Sampling sub-sphere radius (= radius * samp_radius_ratio)
+        particle_pos: Array of shape (N, 3), particle coordinates
+        rho_N_ave: Average particle number density
+        rho_N_cri_ratio: Density threshold ratio (actual threshold = rho_N_cri_ratio * rho_N_ave)
     
-    返回:
-        axes: PCA主成分（3个轴方向），形状为 (3, 3)
-        variances: 各主成分的方差（表示轴长度），形状为 (3,)
+    Returns:
+        axes: PCA principal components (3 axis directions), shape of (3, 3)
+        variances: Variance of each principal component (representing axis length), shape of (3,)
     """
     N_count = 0
     N_loop = 0
-    samp_accept = []  # 存储接受的采样点 (x, y, z, 粒子数)
+    samp_accept = []  # Store accepted sampling points (x, y, z, particle count)
     
     while N_count < N_samp:
-        # 解析球体中心坐标
+        # Parse sphere center coordinates
         center_x, center_y, center_z = sphere_center
         
-        # 生成球面上的随机采样点（球坐标系转笛卡尔坐标系）
-        r = radius * np.random.random()  # 径向随机值（0~radius）
-        theta = np.arccos(1 - 2 * np.random.random())  # 极角（0~π）
-        phi = 2 * np.pi * np.random.random()  # 方位角（0~2π）
+        # Generate random sampling points on the sphere (spherical coordinate system to Cartesian coordinate system)
+        r = radius * np.random.random()  # Radial random value (0~radius)
+        theta = np.arccos(1 - 2 * np.random.random())  # Polar angle (0~π)
+        phi = 2 * np.pi * np.random.random()  # Azimuth angle (0~2π)
         
-        # 转换为笛卡尔坐标
+        # Convert to Cartesian coordinates
         x = center_x + r * np.sin(theta) * np.cos(phi)
         y = center_y + r * np.sin(theta) * np.sin(phi)
         z = center_z + r * np.cos(theta)
         samp_center = np.array([x, y, z])
         
-        # 计算粒子到采样中心的距离并筛选
+        # Calculate the distance from particles to the sampling center and filter
         distances = Compute_Distances_Numba(particle_pos, samp_center)
-        samp_pos = particle_pos[distances < samp_radius]  # 筛选小球内的粒子
+        samp_pos = particle_pos[distances < samp_radius]  # Filter particles inside the sub-sphere
         
-        # 密度判断：若密度超过阈值则接受该采样点
+        # Density judgment: accept the sampling point if density exceeds the threshold
         volume = (4 / 3) * np.pi * (samp_radius **3)
         if volume > 0 and (len(samp_pos) / volume) >= rho_N_cri_ratio * rho_N_ave:
             samp_accept.append([samp_center[0], samp_center[1], samp_center[2], len(samp_pos)])
@@ -80,7 +80,7 @@ def Single_Sphere_Sampling(N_samp, sphere_center, radius, samp_radius,
         if N_loop > 100 * N_samp:
             return None, None
     
-    # 数据清洗（去除异常值）
+    # Data cleaning (remove outliers)
     samp_accept = np.vstack(samp_accept)
     
     for i in range(len(nearby_gal_pos)):
@@ -91,41 +91,42 @@ def Single_Sphere_Sampling(N_samp, sphere_center, radius, samp_radius,
             #print('The substructure is closely attached to the central galaxy. Skipping this halo!')
             return None, None
             
-    z_scores = np.abs(zscore(samp_accept[:, 0:3]))  # 计算坐标的Z-score
-    pos_clean = samp_accept[:, 0:3][(z_scores < 3).all(axis=1)]  # 保留Z-score < 3的点
+    z_scores = np.abs(zscore(samp_accept[:, 0:3]))  # Calculate Z-score of coordinates
+    pos_clean = samp_accept[:, 0:3][(z_scores < 3).all(axis=1)]  # Keep points with Z-score < 3
     
-    # PCA分析：计算椭球轴方向和方差
+    # PCA analysis: compute ellipsoid axis directions and variance
     pca = PCA(n_components=3)
     pca.fit(pos_clean)
     
     return pca.components_, pca.explained_variance_
+                              
 
 
 def Sphere_Sampling_Method(N_samp, sphere_center, radius, samp_radius_ratio, 
-                   particle_pos, nearby_gal_pos, nearby_gal_rhalf, rho_N_ave, rho_N_cri_ratio, N_re=1):
+                           particle_pos, nearby_gal_pos, nearby_gal_rhalf, rho_N_ave, rho_N_cri_ratio, N_re=1):
     """
-    主函数：多进程并行球体采样，计算椭球轴分布
+    Main function: multi-process parallel sphere sampling to calculate ellipsoid axis distribution
     
-    参数:
-        N_samp: 每次重复的目标采样点数
-        sphere_center: 椭球中心坐标 (x, y, z)
-        radius: 所有粒子分布空间的特征半径
-        samp_radius_ratio: 采样小球半径比例（samp_radius = radius * 该值）
-        particle_pos: (N, 3) 数组，粒子坐标
-        rho_N_ave: 平均粒子数密度
-        rho_N_cri_ratio: 密度阈值比例，采样小球内rho > rho_N_ave * rho_N_cri_ratio则接收
-        N_re: 重复采样次数（并行执行）
+    Parameters:
+        N_samp: Target number of sampling points per repetition
+        sphere_center: Ellipsoid center coordinates (x, y, z)
+        radius: Characteristic radius of all particle distribution space
+        samp_radius_ratio: Sampling sub-sphere radius ratio (samp_radius = radius * this value)
+        particle_pos: (N, 3) array, particle coordinates
+        rho_N_ave: Average particle number density
+        rho_N_cri_ratio: Density threshold ratio, accept if rho > rho_N_ave * rho_N_cri_ratio inside sampling sub-sphere
+        N_re: Number of repeated samplings (executed in parallel)
     
-    返回:
-        axes_collect: 列表，每个元素为 (3, 3) 数组，存储每次重复的椭球三轴方向
-        variances_collect: 列表，每个元素为 (3, N_re) 数组，存储每次重复的PCA方差
+    Returns:
+        axes_collect: List, each element is a (3, 3) array storing the three ellipsoid axis directions for each repetition
+        variances_collect: List, each element is a (3, N_re) array storing the PCA variances for each repetition
     """
-    # 预处理参数
+    # Preprocess parameters
     samp_radius = radius * samp_radius_ratio
-    particle_pos = np.ascontiguousarray(particle_pos)  # 确保内存连续，提升Numba效率
+    particle_pos = np.ascontiguousarray(particle_pos)  # Ensure memory contiguity to improve Numba efficiency
     
-    # 并行执行N_re次采样
-    results = Parallel(n_jobs=N_re, verbose=0)(  # 关闭verbose避免日志干扰
+    # Execute N_re samplings in parallel
+    results = Parallel(n_jobs=N_re, verbose=0)(  # Disable verbose to avoid log interference
         delayed(Single_Sphere_Sampling)(
             N_samp=N_samp,
             sphere_center=sphere_center,
@@ -143,20 +144,20 @@ def Sphere_Sampling_Method(N_samp, sphere_center, radius, samp_radius_ratio,
         if axes is None or variances is None:
             return [None], [None]
         
-    # 收集结果
+    # Collect results
     axes_collect = [res[0] for res in results]
     
-    # 将第一个矢量作为标准，使重复计算的对应矢量与之夹角为锐角
+    # Use the first vector as a standard so that the corresponding vectors in repeated calculations form an acute angle with it
     standard = axes_collect[0]
     adjusted_axes_collect = [standard.copy()]
     
     for i in range(1, len(axes_collect)):
         current_array = axes_collect[i].copy()
-        # 检查每个矢量
+        # Check each vector
         for j in range(current_array.shape[0]):
-            # 计算当前矢量与标准矢量的点积
+            # Calculate the dot product of the current vector and the standard vector
             dot_product = np.dot(current_array[j], standard[j])
-            # 如果点积小于0，则反转当前矢量方向
+            # If the dot product is less than 0, reverse the direction of the current vector
             if dot_product < 0:
                 current_array[j] *= -1
         adjusted_axes_collect.append(current_array)
@@ -166,7 +167,7 @@ def Sphere_Sampling_Method(N_samp, sphere_center, radius, samp_radius_ratio,
     return adjusted_axes_collect, variances_collect
 
 
-#----------------Method 2-----------------
+#----------------Method 2: ITM-----------------
 
 @njit
 def Compute_Inertia_Tensor(sphere_center, particle_pos, particle_mass, nearby_gal_pos, nearby_gal_rhalf): 
@@ -179,15 +180,15 @@ def Compute_Inertia_Tensor(sphere_center, particle_pos, particle_mass, nearby_ga
     particle_pos = particle_pos - sphere_center
     inertia_tensor = np.zeros((3, 3), dtype=np.float64)
     
-    # 遍历每个粒子
+    # Iterate through each particle
     for i in range(len(particle_mass)):
         mass = particle_mass[i]
         x, y, z = particle_pos[i]
         
-        # 计算位置矢量的平方
+        # Calculate the square of the position vector
         r_squared = x**2 + y**2 + z**2
         
-        # 计算单个粒子对惯量张量的贡献并累加
+        # Calculate the contribution of a single particle to the inertia tensor and accumulate it
         inertia_tensor[0, 0] += mass * (r_squared - x**2)
         inertia_tensor[0, 1] += mass * (-x * y)
         inertia_tensor[0, 2] += mass * (-x * z)
@@ -201,6 +202,7 @@ def Compute_Inertia_Tensor(sphere_center, particle_pos, particle_mass, nearby_ga
         inertia_tensor[2, 2] += mass * (r_squared - z**2)
     
     return inertia_tensor
+    
 
 def Inertia_Tensor_Method(sphere_center, particle_pos, particle_mass, nearby_gal_pos, nearby_gal_rhalf):
     inertia_tensor = Compute_Inertia_Tensor(sphere_center, particle_pos, particle_mass, nearby_gal_pos, nearby_gal_rhalf)
