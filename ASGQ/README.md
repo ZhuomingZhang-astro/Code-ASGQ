@@ -17,8 +17,8 @@ Core statistical pipeline for primary data processing, statistical analysis, and
 | **3** | `r` | Radial distance ($r$) [kpc] |
 | **4** | `ra_deg` | Right Ascension (RA) relative to the central galaxy reference frame [deg] |
 | **5** | `dec_deg` | Declination (DEC) relative to the central galaxy reference frame [deg] |
-| **6** | `sgal_sfr` | Star Formation Rate (SFR) [M_sun / yr] |
-| **7** | `sgal_starmass` | Stellar mass of the galaxy [M_sun] |
+| **6** | `sgal_sfr` | Star Formation Rate (SFR) [$M_\odot$ / yr] |
+| **7** | `sgal_starmass` | Stellar mass of the galaxy [$M_\odot$] |
 | **8** | `gal_index_select` | Galaxy Catalogue ID |
 | **9** | `central_CID_array` | Central galaxy Catalogue ID |
 | **10** | `progen_CID` | Progenitor galaxy Catalogue ID |
@@ -32,11 +32,11 @@ Core statistical pipeline for primary data processing, statistical analysis, and
 | **22 – 24** | `cgal_abspos[:, 0:3]` | Coordinates of central galaxy in simulation box [kpc] |
 | **25 – 27** | `sgal_absvel[:, 0:3]` | Velocity of galaxy in simulation box [km/s] |
 | **28 – 30** | `cgal_absvel[:, 0:3]` | Velocity of central galaxy in simulation box [km/s] |
-| **31** | `sgal_mass` | Total mass of the galaxy [M_sun] |
-| **32** | `Mass` | Host halo mass within $R_\mathrm{200c}$ [M_sun] |
+| **31** | `sgal_mass` | Total mass of the galaxy [$M_\odot$] |
+| **32** | `Mass` | Host halo mass within $R_\mathrm{200c}$ [$M_\odot$] |
 | **33** | `merge` | Merger status flag |
-| **34** | `sgal_dmmass` | Dark matter mass of the galaxy [M_sun] |
-| **35** | `sgal_gasmass` | Gas mass of the galaxy [M_sun] |
+| **34** | `sgal_dmmass` | Dark matter mass of the galaxy [$M_\odot$] |
+| **35** | `sgal_gasmass` | Gas mass of the galaxy [$M_\odot$] |
 
      * **2. Halo Triaxiality and Variance Data:** Compiles halo-level attributes across the $N_{re}$ runs:
        * **Central Galaxy ID:** Unique identifier mapping each central galaxy and its host halo.
