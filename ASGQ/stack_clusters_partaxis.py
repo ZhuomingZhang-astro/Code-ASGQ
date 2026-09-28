@@ -98,7 +98,7 @@ def process_halo_data(simulation_name, h, catalog_path, snapshot_path, L, snapnu
         return galaxy_index, accept
 
 
-sgaldata = [[] for _ in range(N_re+1)]
+    sgaldata = [[] for _ in range(N_re+1)]
     CID_vec_var = []
 
     for index in range(len(cluster_halo_CID)):
