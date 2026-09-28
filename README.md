@@ -10,7 +10,7 @@ This repository contains the core analysis scripts and numerical tools used in o
 ## 📂 Repository Structure
 
 * [`caesar/`](https://caesar.readthedocs.io/en/latest/index.html) — Processing snapshot/particle data from simulation for halo and galaxy catalogs.
-* `correct_periodic_coords/` — Routines for handling periodic boundary conditions and coordinate transformations.
+* `correct_periodic_coords/` — Tools for handling periodic boundary conditions and coordinate transformations.
 * `ellip_axis_finder/` — Tools to determine the morphological and spatial axes of central galaxies and host halos.
 * `ASGQ/` — Core statistical pipeline for measuring anisotropic satellite quenching and spatial segregation.
 * `environment.yml` — Conda environment specification file containing all required dependencies.
