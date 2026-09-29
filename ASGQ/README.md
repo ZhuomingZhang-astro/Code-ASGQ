@@ -122,4 +122,29 @@ Core statistical pipeline for primary data processing, statistical analysis, and
 
 ## ⚙️ Usage Notes
 
-Make sure you have activated the project's Conda environment (`workenv`) from the root directory before running these scripts or notebooks:
+Make sure you have activated the project's Conda environment (`workenv`) from the root directory before running these scripts or notebooks.
+
+---
+
+## 📦 Data Availability & Input Data
+
+The core scripts in this repository process cosmological simulation data to analyze anisotropic satellite galaxy quenching. Due to the massive scale of the raw simulation suites, **raw simulation snapshots are not bundled directly in this repository**. 
+
+### 1. Raw Simulation Data (snapshot)
+The original simulation datasets used in this work are publicly available from their respective collaborations:
+* **SIMBA:** [snap_m100n1024_151.hdf5](http://simba.roe.ac.uk/simdata/m100n1024/s50/snapshots/snap_m100n1024_151.hdf5).
+* **TNG100-1:** [snap_099.*.hdf5](https://www.tng-project.org/data/downloads/TNG100-1/#).
+* **EAGLE:** [snap_028_z000p000.*.hdf5](https://eagle.strw.leidenuniv.nl/wordpress/index.php/eagle-simulations-public-database/).
+* **SIMBA-nofb:** [snap_m50n512_151.hdf5](http://simba.roe.ac.uk/simdata/m50n512/s50nofb/snapshots/snap_m50n512_151.hdf5).
+
+### 2. Pre-processed (Catalogs)
+As introduced in outier README, the catalogs are derived from caesar, you can also download the catalogs from following link:
+* **SIMBA:** [m100n1024_151.hdf5](http://simba.roe.ac.uk/simdata/m100n1024/s50/catalogs/m100n1024_151.hdf5).
+* **TNG100:** [TNG public data access page](https://www.tng-project.org/data/).
+* **EAGLE:** Accessible via the [EAGLE public data access page](https://www.tng-project.org/data/).
+* **SIMBA-nofb:** [m50n512_151.hdf5](http://simba.roe.ac.uk/simdata/m50n512/s50nofb/catalogs/m50n512_151.hdf5).
+
+### 3. Intermediate Data
+To run the analysis notebooks and reproduce the main figures without re-processing raw snapshots, we provide necessary intermediate data products (`GalInHalo_{part_axis}_axis/{snapnum:03}/xxx`) on Zenodo:
+* 🔗 **Zenodo DOI:** `[Insert Zenodo DOI Link Upon Publication]`
+* *Instructions:* Download the whole data folder (`Quenched_Direction_Data`) from Zenodo and place it in your root directory before executing the scripts.
