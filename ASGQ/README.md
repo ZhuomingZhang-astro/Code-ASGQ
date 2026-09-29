@@ -140,11 +140,12 @@ The original simulation datasets used in this work are publicly available from t
 ### 2. Pre-processed (Catalogs)
 As introduced in outier README, the catalogs are derived from caesar, you can also download the catalogs from following link:
 * **SIMBA:** [m100n1024_151.hdf5](http://simba.roe.ac.uk/simdata/m100n1024/s50/catalogs/m100n1024_151.hdf5).
-* **TNG100:** [TNG public data access page](https://www.tng-project.org/data/).
-* **EAGLE:** Accessible via the [EAGLE public data access page](https://www.tng-project.org/data/).
+* **TNG100-1:** [Caesar_TNG_100.hdf5](https://www.tng-project.org/data/).
+* **EAGLE:** [Caesar_RefL0100N1504-FoF.hdf5](https://www.tng-project.org/data/).
 * **SIMBA-nofb:** [m50n512_151.hdf5](http://simba.roe.ac.uk/simdata/m50n512/s50nofb/catalogs/m50n512_151.hdf5).
 
-### 3. Intermediate Data
-To run the analysis notebooks and reproduce the main figures without re-processing raw snapshots, we provide necessary intermediate data products (`GalInHalo_{part_axis}_axis/{snapnum:03}/xxx`) on Zenodo:
+### 3. Intermediate Data (For Quick Reproduction)
+To bypass heavy raw data processing and data ingestion, we provide the essential intermediate data products (`GalInHalo_{part_axis}_axis/{snapnum:03}/xxx`) on Zenodo:
 * 🔗 **Zenodo DOI:** `[Insert Zenodo DOI Link Upon Publication]`
+* **Workflow Tip:** If you download and place these intermediate data folders into the root directory, **you can directly skip `classifier.ipynb` and proceed straight to running the subsequent analysis and plotting notebooks.**
 * *Instructions:* Download the whole data folder (`Quenched_Direction_Data`) from Zenodo and place it in your root directory before executing the scripts.
