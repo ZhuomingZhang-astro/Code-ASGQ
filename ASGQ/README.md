@@ -124,6 +124,13 @@ Core statistical pipeline for primary data processing, statistical analysis, and
 
 Make sure you have activated the project's Conda environment (`workenv`) from the root directory before running these scripts or notebooks.
 
+### Execution Order & Pipeline Structure
+To reproduce the analysis and main figures, please execute the Jupyter notebooks sequentially **from `classifier.ipynb` to `ASGQ_Nratio.ipynb`**:
+
+* **`stack_clusters_partaxis.py` & `SFGVQ.py` (Utility Scripts):** These serve as foundational utility modules containing helper functions and configurations. **They do not need to be run directly.**
+* **`classifier.ipynb`:** Performs galaxy classification and data processing based on raw snapshots/catalogs. *(💡 **Tip:** If you have downloaded our pre-processed intermediate data products `GalInHalo_{part_axis}_axis/{snapnum:03}/xxx` from Zenodo and placed them in the working directory, **you can completely skip this notebook** and proceed directly to the subsequent analysis.)*
+* **From `geometry.ipynb` to `ASGQ_Nratio.ipynb`:** Core analysis and plotting notebooks. Run these sequentially to generate the final results and figures presented in the paper.
+
 ---
 
 ## 📦 Data Availability & Input Data
