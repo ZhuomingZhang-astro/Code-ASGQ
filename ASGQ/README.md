@@ -100,22 +100,17 @@ Core statistical pipeline for primary data processing, statistical analysis, and
 
 
 7. [`mass_function.ipynb`](mass_function.ipynb)
-   * **Description:** Computes halo mass functions and associated statistical distributions.
-   * 
+   * **Description:** Generates Figures 3, 5, 6, and 7 by computing halo and stellar mass functions, classifying galaxy populations into star-forming, green-valley, and quenched categories using star formation rate (SFR) and stellar mass ($M_*$) criteria, and evaluating the spatial distributions and radial profiles ($R/R_\mathrm{200c}$) of quenched and unquenched satellite galaxies. It processes multi-realisation mock catalogs via major- and minor-axis cone sampling across multiple cosmological simulation suites (SIMBA, TNG100, EAGLE, and SIMBA-nofb) as well as low-mass subsamples from TNG100, computes 99.7% confidence interval error bands, and outputs publication-ready PDF figures.
+   * **Output Data Structure:**
+     * **1. Figure Results Directory:** Saved under `fig_result/` containing high-resolution statistical, distribution, and comparative PDF profiles (e.g., `starmass_function.pdf`, `F_Q.pdf`, `{sim_name}_UnQ_Q_R.pdf`, `TNG100_lowmass_UnQ_Q_R.pdf` and `EAGLE_lowmass_UnQ_Q_R.pdf`).
+
+
 
 8. [`ASGQ_Nratio.ipynb`](ASGQ_Nratio.ipynb)
    * **Description:** Generates Figure 4 by evaluating the relation between cluster-by-cluster structural anisotropy and anisotropic satellite quenching across the four cosmological simulations (SIMBA, TNG100, EAGLE, and SIMBA-nofb). It processes the directional satellite counts and statistics within specific radial intervals ($R/R_\mathrm{200c} \in (3, 5)$) to compute individual cluster log number ratios ($\ln(N_\mathrm{major} / N_\mathrm{minor})$) and quenched fraction excesses ($\Delta F_\mathrm{Q}$). It categorizes individual halos into populations with and without ASGQ signals, constructs a stacked pseudo-cluster for poor-richness systems, performs linear regression fits, and outputs multi-panel PDF figures.
    * **Output Data Structure:**
      * **1. Intermediate Data Directory:** Saved under `signal_nosignal_data/{sim_name}/{part_type}/{snapnum}/` containing directional metrics and masks: anisotropy arrays (`delta_Qfrac_{min}_{max}_all.npy`, `N_ratio_{min}_{max}_all.npy`), satellite count totals (`N_major`, `QN_major`, `N_minor`, `QN_minor`), and subset classification indices/CIDs (`signal_{min}_{max}_index.npy`, `nosignal_{min}_{max}_index.npy`, `signal_{min}_{max}_CID.npy`, `nosignal_{min}_{max}_CID.npy`).
      * **2. Figure Results Directory:** Saved under `fig_result/` containing high-resolution scatter and linear fit profiles (e.g., `{sim_name}_ASGQ_Nratio_{min}_{max}_{part_type}_z_0.pdf`).
-
----
-
-## 📁 Data Directories
-
-* `data_input/` — Raw or pre-filtered observational/simulation catalogs used as inputs.
-* `data_processed/` — Intermediate processed outputs, stacked profiles, or matching results.
-* `outputs/` — Generated figures, tables, and numerical results for the paper.
 
 ---
 
