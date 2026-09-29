@@ -78,14 +78,10 @@ Core statistical pipeline for primary data processing, statistical analysis, and
 <br>
 
 4. [`geometry.ipynb`](geometry.ipynb)
-   * **Description:** Processes the previously generated `GalInHalo_{part_axis}` data across the four cosmological simulations (SIMBA, TNG100, EAGLE, and SIMBA-nofb). It first loads and matches the central galaxy IDs and triaxial directions from both stellar (`star`) and dark matter (`dm`) pickle files (`CID_vec.pkl`), applies a halo mass cut ($M_\mathrm{200c} \ge 1 \times 10^{12} \, M_\odot$), and iterates across the $N_\mathrm{re} = 50$ independent repetitions to compute alignment angles between the stellar and dark matter ellipsoidal principal axes.
+   * **Description:** Processes the previously generated `GalInHalo_{part_axis}` data across the four cosmological simulations (SIMBA, TNG100, EAGLE, and SIMBA-nofb). It first loads and matches the central galaxy IDs and triaxial directions from both stellar (`star`) and dark matter (`dm`) pickle files (`CID_vec.pkl`), applies a halo mass cut ($M_\mathrm{200c} \ge 1 \times 10^{12} · M_\odot$), and iterates across the $N_\mathrm{re} = 50$ independent repetitions to compute alignment angles between the stellar and dark matter ellipsoidal principal axes.
    * **Output Data Structure:**
      * **4.1. Directory Structure:** Saved under `cluster_data/{sim_name}/{snapnum}/`.
      * **4.2. Consolidated Cluster Data (`all_data.pkl`):** A pickled list (`all_data`) storing structured records for each qualified halo. Each entry contains the central galaxy ID (`CID`), mean alignment angles (`ave_angle_i`) and their standard deviations (`std_angle_i`) between stellar and dark matter principal axes across repetitions, the average stellar triaxial directions (`ave_vec_star`) and variances (`ave_var_star`), and the average dark matter triaxial directions (`ave_vec_dm`) and variances (`ave_var_dm`).
-
-| File / Output Name | File Format | Path / Naming Convention | Physical Meaning & Description |
-| :--- | :--- | :--- | :--- |
-| **`all_data.pkl`** | Pickle (`.pkl`) | `cluster_data/{sim_name}/{snapnum}/all_data.pkl` | Comprehensive structured list containing central galaxy IDs, stellar-DM axis alignment angles (mean and standard deviation), and averaged triaxial vectors/variances for both stellar and dark matter components across the $N_\mathrm{re} = 50$ runs |
 
 <br>
 
