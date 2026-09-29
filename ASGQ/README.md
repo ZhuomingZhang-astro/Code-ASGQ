@@ -9,7 +9,7 @@ Core statistical pipeline for primary data processing, statistical analysis, and
 1. [`stack_clusters_partaxis.py`](stack_clusters_partaxis.py) Note: Utility script (imported and used as a module).
    * **Description:** Computes ellipsoidal triaxiality based on "central galaxy stellar particle data" / "host halo dark matter particles within $R_\mathrm{200c}$" across $N_\mathrm{re}$ independent repeated runs. Within `stack_clusters_partaxis.py`, `galaxy_ave.npy` uses the triaxial vectors averaged over the $N_\mathrm{re} = 50$ independent repeated calculations (`ave_vectors = np.array(axes_collect).mean(axis=0)`), whereas each individual run file (`galaxy_{i}.npy`) utilizes the actual triaxial directions independently computed in that specific run.
    * **Output Data Structure:**
-     * **1. Galaxy and Environment Data (`sgaldata`):** Records information for every central galaxy and all surrounding galaxies within $10 R_\mathrm{200c}$ of its position across independent runs.
+     * **1. Galaxy and Environment Data (`sgaldata`):** Records information for every central galaxy and all surrounding galaxies within $10 R_\mathrm{200c}$ and beyond 2 times half mass radius of central galaxy of its position across independent runs.
        
 | Column / Index | Variable Name in Script | Physical Meaning & Description |
 | :--- | :--- | :--- |
@@ -81,8 +81,18 @@ Core statistical pipeline for primary data processing, statistical analysis, and
 | :--- | :--- | :--- | :--- |
 | **`all_data.pkl`** | Pickle (`.pkl`) | `cluster_data/{sim_name}/{snapnum}/all_data.pkl` | Comprehensive structured list containing central galaxy IDs, stellar-DM axis alignment angles (mean and standard deviation), and averaged triaxial vectors/variances for both stellar and dark matter components across the $N_\mathrm{re} = 50$ runs |
 
+*****
+
 5. [`ASGQ_Mstar.ipynb`](ASGQ_Mstar.ipynb)
-   * **Description:** Analyzes stellar mass dependent trends and property distributions in ASGQ studies.
+   * **Description:** Generates Figure 1 by utilizing the qualified halo data from `all_data.pkl` (produced by `geometry.ipynb`). For each cosmological simulation (SIMBA, TNG100, EAGLE, and SIMBA-nofb) and across three radial bins defined by projected distance ratios ($R/R_\mathrm{200c} \in (2r_\mathrm{half,c}/R_\mathrm{200c}, 1)$, $(1, 3)$, and $(3, 5)$), it filters satellite galaxies located along the major and minor axes of the host halo (within a sample angle of $45^\circ$). It then classifies galaxies into Star-Forming (SF) and Quenched (Q) populations based on a redshift-dependent SFR threshold, computes the quenched fraction $F_\mathrm{Q}$ for both axes, and calculates the interpolated difference curve ($\Delta F_\mathrm{Q} = F_\mathrm{Q, major} - F_\mathrm{Q, minor}$), with asymmetric error bars corresponding to the $3\sigma$ / 99.7% confidence interval) to quantify anisotropic satellite quenching across stellar mass bins.
+   * **Output Data Structure:**
+     * **1. Intermediate Data Directory:** Saved under `fig_data_starmass/{sim_name}/` containing compressed NumPy arrays (`.npz`) for each radial bin (e.g., `all_R_0_to_1.npz`, `all_R_1_to_3.npz`, `all_R_3_to_5.npz`).
+     * **2. Figure Results Directory:** Saved under `fig_result/` containing publication-ready PDF plots for each simulation (e.g., `{sim_name}_BCG_all.pdf`).
+
+| File / Output Name | File Format | Path / Naming Convention | Physical Meaning & Description |
+| :--- | :--- | :--- | :--- |
+| **`{axis_align}_R_{low}_to_{high}.npz`** | NumPy Archive (`.npz`) | `fig_data_starmass/{sim_name}/all_R_{low}_to_{high}.npz` | Contains interpolated stellar masses (`x_star`), median quenched fraction differences (`star_median`), and associated asymmetric errors (`star_err`) between major and minor axes for the given $R/R_\mathrm{200c}$ radial interval |
+| **`{sim_name}_BCG_all.pdf`** | PDF Document (`.pdf`) | `fig_result/{sim_name}_BCG_all.pdf` | Final multi-radial-bin plot illustrating the quenched fraction difference ($\Delta F_\mathrm{Q}$) as a function of stellar mass ($\log_{10}(M_* / M_\odot)$) for the specified cosmological simulation |
 
 6. [`ASGQ_Radius.ipynb`](ASGQ_Radius.ipynb)
    * **Description:** Examines radial dependencies and scale-segregation profiles.
