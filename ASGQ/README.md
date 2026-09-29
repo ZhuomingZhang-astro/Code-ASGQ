@@ -93,25 +93,21 @@ Core statistical pipeline for primary data processing, statistical analysis, and
 
 
 6. [`ASGQ_Radius.ipynb`](ASGQ_Radius.ipynb)
-   * **Description:** Generates Figure 2 by examines radial dependencies and scale-segregation profiles by processing the stack-averaged galaxy datasets (`GalInHalo`) across the four cosmological simulations (SIMBA, TNG100, EAGLE, and SIMBA-nofb). It evaluates satellite distributions across extended radial bins ($R/R_\mathrm{200c} \in [0, 1, 3, 5, 7, 9]$) and filters galaxies along the major and minor axes (within a $45^\circ$ sample angle). It computes spatial number ratios of quenched versus unquenched satellites ($N_\mathrm{major} / N_\mathrm{minor}$), directional quenched fractions ($F_\mathrm{Q}$), and the quenched fraction excess ($\Delta F_\mathrm{Q} = F_\mathrm{Q, major} - F_\mathrm{Q, minor}$), incorporating $3\sigma$ (99.7%) confidence intervals derived from the $N_\mathrm{re} = 50$ bootstrap/repeated runs.
+   * **Description:** Generates Figure 2 by examining radial dependencies and scale-segregation profiles from processing the stacking galaxy datasets (`GalInHalo_{part_axis}_axis/{snapnum:03}/xxx`) across the four cosmological simulations (SIMBA, TNG100, EAGLE, and SIMBA-nofb). It evaluates satellite distributions across extended radial bins ($R/R_\mathrm{200c} \in [0, 1, 3, 5, 7, 9]$) and filters galaxies along the major and minor axes (within a $45^\circ$ sample angle). It computes spatial number ratios of quenched (`QN`, i.e., $N_\mathrm{major} / N_\mathrm{minor}$ for quenched populations) versus unquenched (`notQN`) satellites, directional quenched fractions ($F_\mathrm{Q}$), and the quenched fraction excess ($\Delta F_\mathrm{Q} = F_\mathrm{Q, major} - F_\mathrm{Q, minor}$), incorporating $3\sigma$ (99.7%) confidence intervals derived from the $N_\mathrm{re} = 50$ bootstrap/repeated runs.
    * **Output Data Structure:**
-     * **1. Intermediate Data Directory:** Saved under `fig_data_R/{sim_name}/{part_type}/{snapnum}/{axis_align}/` containing saved mean radial bin distances (`RR200cRatio_mean.npy`), as well as sub-directories (`ave/`, `0/`, ..., `49/`) storing number ratios (`N_ratio.npy`, `QN_ratio.npy`, `notQN_ratio.npy`) and directional quenched fractions (`Qfrac_major.npy`, `Qfrac_minor.npy`).
+     * **1. Intermediate Data Directory:** Saved under `fig_data_R/{sim_name}/{part_type}/{snapnum}/{axis_align}/` containing saved mean radial bin distances (`RR200cRatio_mean.npy`), as well as sub-directories (`ave/`, `0/`, ..., `49/`) storing number ratios (`N_ratio.npy`, `QN_ratio.npy` for quenched galaxies, and `notQN_ratio.npy` for unquenched galaxies) and directional quenched fractions (`Qfrac_major.npy`, `Qfrac_minor.npy`).
      * **2. Figure Results Directory:** Saved under `fig_result/` containing publication-ready multi-panel PDF figures illustrating the radial profiles (e.g., `{sim_name}_QF_R_BCG_z_0.pdf`).
 
-| File / Output Name | File Format | Path / Naming Convention | Physical Meaning & Description |
-| :--- | :--- | :--- | :--- |
-| **`RR200cRatio_mean.npy`** | NumPy Array (`.npy`) | `fig_data_R/{sim_name}/{part_type}/{snapnum}/{axis_align}/RR200cRatio_mean.npy` | Mean normalized projected radial distances ($R/R_\mathrm{200c}$) for each radial bin averaged over the full catalog sample |
-| **`N_ratio.npy`, `QN_ratio.npy`, `notQN_ratio.npy`** | NumPy Array (`.npy`) | `fig_data_R/{sim_name}/{part_type}/{snapnum}/{axis_align}/{suffix}/` | Major-to-minor axis satellite number ratios for total, quenched, and unquenched satellite populations across radial bins |
-| **`Qfrac_major.npy`, `Qfrac_minor.npy`** | NumPy Array (`.npy`) | `fig_data_R/{sim_name}/{part_type}/{snapnum}/{axis_align}/{suffix}/` | Quenched fractions of satellite galaxies located along the host halo's major and minor axes |
-| **`{sim_name}_QF_R_BCG_z_0.pdf`** | PDF Document (`.pdf`) | `fig_result/{sim_name}_QF_R_BCG_z_0.pdf` | Comprehensive three-panel figure showing spatial anisotropy ($N_\mathrm{major} / N_\mathrm{minor}$), quenched fractions ($F_\mathrm{Q}$), and quenched fraction excess ($\Delta F_\mathrm{Q}$) as a function of log-scaled $R/R_\mathrm{200c}$ with $3\sigma$ confidence bands |
 
-
-7. [`ASGQ_Nratio.ipynb`](ASGQ_Nratio.ipynb)
-   * **Description:** Computes major-to-minor axis galaxy number ratios and related environmental metrics.
-
-
-8. [`mass_function.ipynb`](mass_function.ipynb)
+7. [`mass_function.ipynb`](mass_function.ipynb)
    * **Description:** Computes halo mass functions and associated statistical distributions.
+   * 
+
+8. [`ASGQ_Nratio.ipynb`](ASGQ_Nratio.ipynb)
+   * **Description:** Generates Figure 4 by evaluating the relation between cluster-by-cluster structural anisotropy and anisotropic satellite quenching across the four cosmological simulations (SIMBA, TNG100, EAGLE, and SIMBA-nofb). It processes the directional satellite counts and statistics within specific radial intervals ($R/R_\mathrm{200c} \in (3, 5)$) to compute individual cluster log number ratios ($\ln(N_\mathrm{major} / N_\mathrm{minor})$) and quenched fraction excesses ($\Delta F_\mathrm{Q}$). It categorizes individual halos into populations with and without ASGQ signals, constructs a stacked pseudo-cluster for poor-richness systems, performs linear regression fits, and outputs multi-panel PDF figures.
+   * **Output Data Structure:**
+     * **1. Intermediate Data Directory:** Saved under `signal_nosignal_data/{sim_name}/{part_type}/{snapnum}/` containing directional metrics and masks: anisotropy arrays (`delta_Qfrac_{min}_{max}_all.npy`, `N_ratio_{min}_{max}_all.npy`), satellite count totals (`N_major`, `QN_major`, `N_minor`, `QN_minor`), and subset classification indices/CIDs (`signal_{min}_{max}_index.npy`, `nosignal_{min}_{max}_index.npy`, `signal_{min}_{max}_CID.npy`, `nosignal_{min}_{max}_CID.npy`).
+     * **2. Figure Results Directory:** Saved under `fig_result/` containing high-resolution scatter and linear fit profiles (e.g., `{sim_name}_ASGQ_Nratio_{min}_{max}_{part_type}_z_0.pdf`).
 
 ---
 
