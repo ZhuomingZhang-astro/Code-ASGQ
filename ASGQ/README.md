@@ -143,8 +143,8 @@ The original simulation datasets used in this work are publicly available from t
 ### 2. Pre-processed (Catalogs)
 As introduced in outier README, the catalogs are derived from caesar, you can also download the catalogs from following link:
 * **SIMBA:** [m100n1024_151.hdf5](http://simba.roe.ac.uk/simdata/m100n1024/s50/catalogs/m100n1024_151.hdf5).
-* **TNG100-1:** [Caesar_TNG_100.hdf5](https://www.tng-project.org/data/).
-* **EAGLE:** [Caesar_RefL0100N1504-FoF.hdf5](https://www.tng-project.org/data/).
+* **TNG100-1:** [Caesar_TNG_100.hdf5](https://zenodo.org/records/23062756).
+* **EAGLE:** [Caesar_RefL0100N1504-FoF.hdf5](https://zenodo.org/records/23062756).
 * **SIMBA-nofb:** [m50n512_151.hdf5](http://simba.roe.ac.uk/simdata/m50n512/s50nofb/catalogs/m50n512_151.hdf5).
 
 ### 3. Intermediate Data (For Quick Reproduction)
