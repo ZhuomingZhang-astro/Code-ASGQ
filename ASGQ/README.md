@@ -149,6 +149,6 @@ As introduced in outier README, the catalogs are derived from caesar, you can al
 
 ### 3. Intermediate Data (For Quick Reproduction)
 To bypass heavy raw data processing and data ingestion, we provide the essential intermediate data products (`GalInHalo_{part_axis}_axis/{snapnum:03}/xxx`) on Zenodo:
-* 🔗 **Zenodo DOI:** `[Insert Zenodo DOI Link Upon Publication]`
+* 🔗 **Zenodo DOI:** `10.5281/zenodo.23190935`
 * **Workflow Tip:** If you download and place these intermediate data folders into the root directory, **you can directly skip `classifier.ipynb` and proceed straight to running the subsequent analysis and plotting notebooks.**
 * *Instructions:* Download the whole data folder (`Quenched_Direction_Data`) from Zenodo and place it in your root directory before executing the scripts.
